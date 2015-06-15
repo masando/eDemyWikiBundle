@@ -1,0 +1,12 @@
+edemy_wiki_article_details:
+    path:           /{_locale}/article/detalles/{slug}
+    defaults:       { _controller: edemy.main:indexAction }
+    methods:        [ GET ]
+    requirements:   { _locale: es|en }
+
+edemy_wiki_category_details:
+    path:           /{_locale}/categoria/{slug}
+    defaults:       { _controller: edemy.main:indexAction }
+    methods:        [ GET ]
+    requirements:   { _locale: es|en }
+

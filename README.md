@@ -1,2 +1,2 @@
-# eDemyWikiBundle
-Wiki Bundle for eDemy Framework
+# eDemyProductBundle
+Product Bundle for eDemy Framework

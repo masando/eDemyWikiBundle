@@ -1,0 +1,7 @@
+services:
+    edemy.wiki:
+        class: eDemy\WikiBundle\Controller\WikiController
+        calls:
+            - [setEventDispatcher, ["@event_dispatcher"]]
+        tags:
+            - { name: kernel.event_subscriber }

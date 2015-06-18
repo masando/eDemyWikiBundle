@@ -12,14 +12,14 @@ class WikiController extends BaseController
     public static function getSubscribedEvents()
     {
         return self::getSubscriptions('wiki', ['article', 'category'], array(
-            'edemy_wiki_category_frontpage_lastmodified' => array('onCategoryFrontpageLastModified', 0),
-            'edemy_wiki_frontpage_lastmodified' => array('onWikiFrontpageLastModified', 0),
-            'edemy_wiki_wiki_details' => array('onWikiDetails', 0),
-            'edemy_wiki_wiki_details_lastmodified' => array('onWikiDetailsLastModified', 0),
-            'edemy_wiki_category_details' => array('onCategoryDetails', 0),
-            'edemy_wiki_category_details_lastmodified' => array('onCategoryDetailsLastModified', 0),
-//            'edemy_wiki_frontpage' => array('onFrontpage', 0),
-            'edemy_mainmenu'                        => array('onWikiMainMenu', 0),
+            'edemy_wiki_category_frontpage_lastmodified'    => array('onCategoryFrontpageLastModified', 0),
+            'edemy_wiki_frontpage_lastmodified'             => array('onWikiFrontpageLastModified', 0),
+            'edemy_wiki_article_details_lastmodified'       => array('onWikiArticleDetailsLastModified', 0),
+            'edemy_wiki_article_details'                    => array('onWikiArticleDetails', 0),
+            'edemy_wiki_category_details_lastmodified'      => array('onWikiCategoryDetailsLastModified', 0),
+            'edemy_wiki_category_details'                   => array('onWikiCategoryDetails', 0),
+            //'edemy_wiki_frontpage' => array('onFrontpage', 0),
+            'edemy_mainmenu'                                => array('onWikiMainMenu', 0),
         ));
     }
 
@@ -31,7 +31,7 @@ class WikiController extends BaseController
             if($namespace = $this->getNamespace()) {
                 $namespace .= ".";
             }
-            $item->setValue($namespace . 'edemy_wiki_wiki_index');
+            $item->setValue($namespace . 'edemy_wiki_article_index');
             $items[] = $item;
         }
 
@@ -42,7 +42,7 @@ class WikiController extends BaseController
 
     public function onFrontpage(ContentEvent $event)
     {
-        $this->onCategoryFrontpage($event);
+        $this->addEventModule($event, "templates/wiki/wiki_frontpage");
     }
 
     public function onWikiFrontpageLastModified(ContentEvent $event)
@@ -68,12 +68,12 @@ class WikiController extends BaseController
         );
 
 
-        $this->addEventModule($event, "templates/wiki_frontpage", array(
+        $this->addEventModule($event, "templates/wiki/wiki_frontpage", array(
             'pagination' => $pagination
         ));
     }
 
-    public function onWikiDetailsLastModified(ContentEvent $event)
+    public function onWikiArticleDetailsLastModified(ContentEvent $event)
     {
         $entity = $this->getRepository($event->getRoute())->findOneBy(array(
             'slug'        => $this->getRequestParam('slug'),
@@ -89,7 +89,7 @@ class WikiController extends BaseController
         $event->setLastModified($lastmodified);
     }
     
-    public function onWikiDetails(ContentEvent $event) {
+    public function onWikiArticleDetails(ContentEvent $event) {
         $cart_url = null;
         $cart_button = null;
         if($this->getParam('add_to_cart_button') != 'add_to_cart_button') {
@@ -106,14 +106,14 @@ class WikiController extends BaseController
         $this->get('edemy.meta')->setDescription($entity->getMetaDescription());
         $this->get('edemy.meta')->setKeywords($entity->getMetaKeywords());
 
-        $this->addEventModule($event, "templates/wiki_details", array(
+        $this->addEventModule($event, "templates/wiki/wiki_details", array(
             'entity' => $entity,
             'cart_button' => $cart_button,
             'cart_url' => $cart_url,
         ));
     }
 
-    public function onCategoryFrontpageLastModified(ContentEvent $event)
+    public function onWikiCategoryFrontpageLastModified(ContentEvent $event)
     {
         $category = $this->getRepository('edemy_wiki_category_frontpage')->findLastModified($this->getNamespace());
         //die(var_dump($category->getUpdated()));        
@@ -124,11 +124,11 @@ class WikiController extends BaseController
         return true;
     }
     
-    public function onCategoryFrontpage(ContentEvent $event)
+    public function onWikiCategoryFrontpage(ContentEvent $event)
     {
         $this->get('edemy.meta')->setTitlePrefix("Categorías de Wikis");
 
-        $this->addEventModule($event, "templates/category_frontpage", array(
+        $this->addEventModule($event, "templates/wiki/category_frontpage", array(
             'entities' => $this->getRepository('edemy_wiki_category_frontpage')->findBy(array(
                 'namespace' => $this->getNamespace(),
             )),
@@ -179,7 +179,7 @@ class WikiController extends BaseController
             24/*limit per page*/
         );
 
-        $this->addEventModule($event, "templates/wiki_frontpage", array(
+        $this->addEventModule($event, "templates/wiki/wiki_frontpage", array(
             'pagination' => $pagination,
             'title' => 'Estás en la categoría ' . $category->getName(),
             'num_categories' => $num_categories,

@@ -8,7 +8,7 @@ use Gedmo\Translatable\Translatable;
 use eDemy\MainBundle\Entity\BaseImagen;
 
 /**
- * @ORM\Table("CategoryImagen")
+ * @ORM\Table("WikiCategoryImagen")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity
  */

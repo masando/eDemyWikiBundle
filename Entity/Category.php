@@ -11,7 +11,7 @@ use eDemy\MainBundle\Entity\BaseEntity;
 /**
  * ArticleCategory
  *
- * @ORM\Table("ArticleCategory")
+ * @ORM\Table("WikiCategory")
  * @ORM\Entity(repositoryClass="eDemy\WikiBundle\Entity\CategoryRepository")
  */
 class Category extends BaseEntity implements Translatable

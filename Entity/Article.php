@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use eDemy\MainBundle\Entity\BaseEntity;
 
 /**
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="eDemy\WikiBundle\Entity\WikiRepository")
+ * @ORM\Table("WikiArticle")
+ * @ORM\Entity(repositoryClass="eDemy\WikiBundle\Entity\ArticleRepository")
  */
-class Wiki extends BaseEntity implements Translatable
+class Article extends BaseEntity implements Translatable
 {
     public function __construct($em = null)
     {
@@ -27,29 +27,6 @@ class Wiki extends BaseEntity implements Translatable
     public function __toString()
     {
         return $this->getName();
-    }
-
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(name="model", type="string", length=255, nullable=true)
-     */
-    protected $model;
-
-    public function setModel($model)
-    {
-        $this->model = $model;
-    
-        return $this;
-    }
-
-    public function getModel()
-    {
-        return $this->model;
-    }
-
-    public function showModelInForm()
-    {
-        return false;
     }
 
     /**
@@ -68,50 +45,6 @@ class Wiki extends BaseEntity implements Translatable
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * @ORM\Column(name="price", type="float")
-     */
-    protected $price;
-
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    
-        return $this;
-    }
-
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    public function showPriceInForm()
-    {
-        return true;
-    }
-
-    /**
-     * @ORM\Column(name="price_unit", type="string", length=255)
-     */
-    protected $priceUnit;
-
-    public function setPriceUnit($priceUnit)
-    {
-        $this->priceUnit = $priceUnit;
-    
-        return $this;
-    }
-
-    public function getPriceUnit()
-    {
-        return $this->priceUnit;
-    }
-
-    public function showPriceUnitInForm()
-    {
-        return true;
     }
 
     /**
@@ -143,7 +76,7 @@ class Wiki extends BaseEntity implements Translatable
     }
 
     /**
-     * @ORM\OneToMany(targetEntity="eDemy\WikiBundle\Entity\Imagen", mappedBy="article", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Imagen", mappedBy="article", cascade={"persist","remove"})
      */
     protected $imagenes;
 
@@ -173,12 +106,18 @@ class Wiki extends BaseEntity implements Translatable
     ////
     public function showMeta_DescriptionInForm()
     {
-        return true;
+        return false;
     }
 
     ////
     public function showMeta_KeywordsInForm()
     {
-        return true;
+        return false;
+    }
+
+    ////
+    public function showOrdenInForm()
+    {
+        return false;
     }
 }
